@@ -14,7 +14,7 @@ from gt_utilities import setup_logger
 LOGGER: logging.Logger = setup_logger(__name__)
 
 
-def try_read_csv(path: Path, file_label: str = "file") -> pd.DataFrame | None:
+def try_read_csv(path: Path, file_label: str = "file", optional: bool = False) -> pd.DataFrame | None:
     """Attempt to read a CSV file from multiple possible paths.
 
     Args:
@@ -35,9 +35,11 @@ def try_read_csv(path: Path, file_label: str = "file") -> pd.DataFrame | None:
             LOGGER.error(f"✗ Failed to read {file_label} at {path}: {e}")
             return None
     else:
-        st.error(f"❌ Missing {file_label}: expected at {path}")
+        if optional:
+            LOGGER.warning(f"Optional file not found: {file_label} at {path}")
+        else:
+            st.error(f"❌ Missing {file_label}: expected at {path}")
         return None
-
 
 def load_main_data(data_paths: Path) -> pd.DataFrame | None:
     """Load and preprocess the main MSA dataset.
@@ -88,6 +90,6 @@ def load_all_datasets(
         merged_paths, "merged BFI dataset and 1980/2022 population and labor force data"
     )
 
-    datasets["gdp"] = try_read_csv(gdp_paths, "GDP dataset")
+    datasets["gdp"] = try_read_csv(gdp_paths, "GDP dataset", optional=True)
 
     return datasets
