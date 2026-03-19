@@ -26,6 +26,8 @@ RUN uv sync
 
 
 # Run Data Preprocessing
+ARG BEA_API_KEY
+ENV BEA_API_KEY=$BEA_API_KEY
 RUN python dataprep.py
 
 # Expose Streamlit Port
