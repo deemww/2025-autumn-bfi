@@ -273,7 +273,15 @@ def download_bea_gdp_percent_change(
         return None
 
     if not rows:
-        LOGGER.warning("No data returned from BEA API.")
+        bea_error = results.get("Error") if isinstance(results, dict) else None
+        if bea_error:
+            LOGGER.error(
+                "BEA API returned an error: code=%s, description=%s",
+                bea_error.get("APIErrorCode", "unknown"),
+                bea_error.get("APIErrorDescription", "unknown"),
+            )
+        else:
+            LOGGER.warning("No data returned from BEA API. Full response: %s", data)
         return None
 
     # --- Convert to DataFrame -------------------------------------------------
