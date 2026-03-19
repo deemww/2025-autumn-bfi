@@ -3,6 +3,7 @@
 Contains all color palettes, data paths, styling constants, and chart/demographic relationships
 """
 
+import os
 from pathlib import Path
 
 from gt_utilities import find_project_root
@@ -40,7 +41,7 @@ MERGED_PATHS: Path = DATA_DIR / "merged_bfi.csv"
 COMBINED_GEOJSON: Path = DATA_DIR / "combined_US_regions_auto.geojson"
 GDP_FILE: Path = DATA_DIR / "msa_gdp_percent_change.csv"
 
-API_KEY: str = "73110DFA-D36D-4A7C-99C7-183B704E1596"
+API_KEY: str = os.environ.get("BEA_API_KEY", "73110DFA-D36D-4A7C-99C7-183B704E1596")
 BASE_URL: str = "https://apps.bea.gov/api/data"
 GDP_FILE: Path = DATA_DIR / "msa_gdp_percent_change.csv"
 MERGED_FILE: Path = DATA_DIR / "merged_healthcare_jobs_with_gdp.csv"
